@@ -27,7 +27,7 @@ class CityRepository {
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(string $value): array {
+    public function autocomplete(string $value): array {
         $params = [
             'index' => $this->index,
             'body' => [
