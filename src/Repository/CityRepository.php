@@ -11,7 +11,7 @@ class CityRepository {
     private Client $client;
 
     private string $index = "instapictures_cities";
-    private string $nom_field = "nom";
+    private string $nom_field = "name";
 
     private function __construct() {
         $this->client = ElasticClient::getInstance()->getClient();
@@ -32,9 +32,35 @@ class CityRepository {
             'index' => $this->index,
             'body' => [
                 'query' => [
-                    'query_string' => [
-                        'default_field' => $this->nom_field,
-                        'query' => htmlspecialchars($value) . "*"
+                    'bool' => [
+                        'should' => [
+                            [
+                                'multi_match' => [
+                                    'query' => htmlspecialchars($value),
+                                    'fields' => ['name^2', 'postal_code^3', 'department', 'region', 'country^2'],
+                                    'fuzziness' => 'AUTO',
+                                    'operator' => 'or'
+                                ]
+                            ],
+                            [
+                                'match' => [
+                                    'name' => [
+                                        'query' => htmlspecialchars($value),
+                                        "boost" => 25
+                                    ]
+                                ]
+                            ],
+                            [
+                                'match' => [
+                                    'postal_code' => [
+                                        'query' => htmlspecialchars($value),
+                                        "boost" => 30
+                                    ]
+                                ]
+                            ]
+                        ],
+                        // Ajout d'une clause fallback pour garantir un résultat si aucune correspondance stricte n'est trouvée
+                        'minimum_should_match' => 1
                     ]
                 ],
                 'size' => 10
