@@ -1,21 +1,16 @@
 <?php
 namespace App\Repository;
 
-use Elastic\Elasticsearch\Client;
+use App\Utils\PostUtil;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 
 class CityRepository {
     private static ?CityRepository $instance = null;
 
-    private Client $client;
-
     private string $index = "instapictures_cities";
-    private string $nom_field = "name";
 
-    private function __construct() {
-        $this->client = ElasticClient::getInstance()->getClient();
-    }
+    private function __construct() {}
 
     public static function getInstance(): CityRepository {
         if(is_null(static::$instance))
@@ -66,6 +61,32 @@ class CityRepository {
                 'size' => 10
             ]
         ];
-        return $this->client->search($params)->asArray();
+        return ElasticClient::getInstance()->getClient()->search($params)->asArray();
+    }
+
+    public function search(string $value): array {
+        $actorId = 'apify~instagram-scraper';
+        $input = [
+            "search" => $value,
+            "searchLimit" => 5,
+            "searchType" => "place"
+        ];
+        $options = ["timeout" => 90];
+        $res = ApifyClient::getInstance()->runActorAndGetDatasetItems($actorId, $input, $options);
+
+        $posts = [];
+        if(!is_null($res)) {
+            foreach($res as $loc) {
+                if(isset($loc['location_id'])) {
+                    $loc_id = $loc['location_id'];
+                    $posts[$loc_id] = ["topPostsCount" => count($loc['topPosts']), "latestPostsCount" => count($loc['latestPosts'])];
+                    foreach($loc['topPosts'] as $topPost)
+                        $posts[$loc_id]["topPosts"][] = PostUtil::getInformationFromApiArray($topPost);
+                    foreach($loc['latestPosts'] as $latestPost)
+                        $posts[$loc_id]["latestPosts"][] = PostUtil::getInformationFromApiArray($latestPost);
+                }
+            }
+        }
+        return $posts;
     }
 }
