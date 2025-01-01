@@ -79,7 +79,7 @@ class CityRepository {
             foreach($res as $loc) {
                 if(isset($loc['location_id'])) {
                     $loc_id = $loc['location_id'];
-                    $posts[$loc_id] = ["topPostsCount" => count($loc['topPosts']), "latestPostsCount" => count($loc['latestPosts'])];
+                    $posts[$loc_id] = ["location_name" => $loc['name'], "topPostsCount" => count($loc['topPosts']), "latestPostsCount" => count($loc['latestPosts'])];
                     foreach($loc['topPosts'] as $topPost)
                         $posts[$loc_id]["topPosts"][] = PostUtil::getInformationFromApiArray($topPost);
                     foreach($loc['latestPosts'] as $latestPost)
