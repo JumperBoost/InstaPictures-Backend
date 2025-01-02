@@ -14,6 +14,7 @@ class PostUtil {
         $info = [
             "code" => $post['code'],
             "text" => $post['caption'] ? $post['caption']['text'] : null,
+            "date" => $post['taken_at'],
             "username" => $post['user']['username'],
             "fullname" => $post['user']['full_name'],
             "pic" => $post['user']['hd_profile_pic_url_info']["url"],
