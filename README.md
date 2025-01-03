@@ -6,7 +6,7 @@ Ce mini-projet est un site internet dans lequel il est possible de consulter les
 Les médias sont basées sur les données d'Instagram, récoltés via une [API Apify](https://apify.com/apify/instagram-scraper).
 
 Le projet est découpé en deux parties : le **frontend** et le **backend**.
-Dans cette partie, il s'agit du backend, c'est-à-dire la logique côté serveur. Le frontend est disponible dans un autre [dépôt]().
+Dans cette partie, il s'agit du backend, c'est-à-dire la logique côté serveur. Le frontend est disponible dans un autre [dépôt](https://github.com/JumperBoost/InstaPictures-Frontend/).
 
 ## Technologies utilisées
 - **PHP** 8.3 et le framework **Symfony** 7.2 pour constituer une API interne
