@@ -15,6 +15,13 @@ Dans cette partie, il s'agit du backend, c'est-à-dire la logique côté serveur
 - [**Apify**](https://apify.com/) pour l'utilisation simplifiée d'API externe, notamment pour le scrapping des données Instagram
 - Serveur web [**nginx**](https://nginx.org/) avec module php et CDN [**Cloudflare**](https://www.cloudflare.com/) pour l'hébergement et la sécurité
 
+## Prérequis d'utilisation
+- **PHP** 8.3.x
+- **Symfony CLI** 5.10.x
+- **Composer** _(avec projet compilé)_
+- Cluster **ElasticSearch** 8.17 configuré, avec données importées
+- Fichier environnement [**.env**](.env) configuré, à partir du fichier [.env.example](.env.example)
+
 ## API interne
 ### Routes
 - `/autocomplete/city/{champ}` : Autocomplétion de la recherche des villes, par le biais de _ElasticSearch_
