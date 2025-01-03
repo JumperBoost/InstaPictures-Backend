@@ -1,0 +1,4 @@
+geonames-postal-code.csv: https://public.opendatasoft.com/explore/dataset/geonames-postal-code/table/?refine.country_code=FR
+countries-codes.csv: https://public.opendatasoft.com/explore/dataset/currency-codes/table/
+
+Données téléchargées le 29 décembre 2024

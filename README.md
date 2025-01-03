@@ -11,6 +11,7 @@ Dans cette partie, il s'agit du backend, c'est-à-dire la logique côté serveur
 ## Technologies utilisées
 - **PHP** 8.3 et le framework **Symfony** 7.2 pour constituer une API interne
 - **ElasticSearch** 8.17 pour le système de recherche des villes, un moteur de recherche puissant et ultra-rapide
+- **Python** 3.11, [script](other/elasticsearch_import.py) pour la collecte des données [CSV](other/csv) et export vers ElasticSearch
 - [**Apify**](https://apify.com/) pour l'utilisation simplifiée d'API externe, notamment pour le scrapping des données Instagram
 - Serveur web [**nginx**](https://nginx.org/) avec module php et CDN [**Cloudflare**](https://www.cloudflare.com/) pour l'hébergement et la sécurité
 

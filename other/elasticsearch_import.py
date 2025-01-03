@@ -11,6 +11,7 @@ ELASTIC_INDEX = "instapictures_cities"
 
 def generate_data():
     print("Génération des données...")
+    # Répertoire des données CSV (à modifier si nécessaire)
     for data in get_data('geonames-postal-code.csv', 'countries-codes.csv'):
         yield { "_index": ELASTIC_INDEX, "_source": data }
     print("Fin de génération des données.", get_ignored_lines(), "lignes n'ont pas pu être importées.")
