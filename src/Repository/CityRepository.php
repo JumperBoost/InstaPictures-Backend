@@ -4,6 +4,7 @@ namespace App\Repository;
 use App\Utils\PostUtil;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class CityRepository {
     private static ?CityRepository $instance = null;
@@ -72,7 +73,13 @@ class CityRepository {
             "searchType" => "place"
         ];
         $options = ["timeout" => 90];
-        $res = ApifyClient::getInstance()->runActorAndGetDatasetItems($actorId, $input, $options);
+
+        $actorData = ApifyClient::getInstance()->runActor($actorId, $input, $options);
+        if(is_null($actorData)) return [];
+        try {
+            ApifyClient::getInstance()->waitUntilActorFinished($actorData);
+        } catch (GuzzleException $e) { return []; }
+        $res = ApifyClient::getInstance()->getActorDatasetItems($actorData);
 
         $posts = [];
         if(!is_null($res)) {

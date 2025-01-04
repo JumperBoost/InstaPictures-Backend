@@ -21,6 +21,16 @@ Dans cette partie, il s'agit du backend, c'est-à-dire la logique côté serveur
 - **Composer** _(avec projet compilé)_
 - Cluster **ElasticSearch** 8.17 configuré, avec données importées
 - Fichier environnement [**.env**](.env) configuré, à partir du fichier [.env.example](.env.example)
+- **Timeout** du serveur web configuré au minimum à **100** secondes. Exemple de configuration avec _nginx_ :
+```nginx
+server {
+    ...
+    # Timeout
+    fastcgi_read_timeout 100;
+    proxy_read_timeout 100;
+    ...
+}
+```
 
 ## API interne
 ### Routes

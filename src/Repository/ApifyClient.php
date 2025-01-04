@@ -1,7 +1,6 @@
 <?php
 namespace App\Repository;
 
-
 use App\Configuration\ApifyClientConfiguration;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -27,11 +26,36 @@ class ApifyClient {
         return self::$instance;
     }
 
-    public function runActorAndGetDatasetItems(string $actorId, array $input = [], array $options = []): ?array {
+    /** @return ?array Tableau de données de l'acteur */
+    public function runActor(string $actorId, array $input = [], array $options = []): ?array {
         try {
-            $res = $this->client->post(sprintf('v2/acts/%s/run-sync-get-dataset-items', $actorId), [
+            $res = $this->client->post(sprintf('v2/acts/%s/runs', $actorId), [
                 'json' => $input,
                 'query' => $options
+            ]);
+            $data = json_decode($res->getBody(), true);
+            return $data['data'];
+        } catch (GuzzleException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function waitUntilActorFinished(array $actorData, int $pauseInSeconds = 3): void {
+        do {
+            sleep($pauseInSeconds);
+            $res = $this->client->get(sprintf('v2/actor-runs/%s', $actorData['id']));
+            $data = json_decode($res->getBody(), true);
+            $status = $data['data']['status'];
+        } while(in_array($status, ['RUNNING', 'READY']));
+    }
+
+    public function getActorDatasetItems(array $actorData): ?array {
+        try {
+            $res = $this->client->get(sprintf('v2/datasets/%s/items', $actorData['defaultDatasetId']), [
+                'query' => ['format' => 'json']
             ]);
             return json_decode($res->getBody(), true);
         } catch (GuzzleException $e) {
