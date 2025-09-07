@@ -29,6 +29,8 @@ class DownloadController extends AbstractController {
             return new Response("Impossible de récupérer le fichier depuis l'hôte.", 500);
 
         header("Content-Type: $type");
+        header("Cache-Control: public, max-age=604800");
+        header("Expires: " . gmdate("D, d M Y H:i:s", time() + 604800) ."");
         foreach ($http_response_header as $h) {
             if (str_starts_with($h, 'Content-Length:')) {
                 header($h);

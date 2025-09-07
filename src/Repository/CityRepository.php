@@ -72,7 +72,10 @@ class CityRepository {
             "searchLimit" => 5,
             "searchType" => "place"
         ];
-        $options = ["timeout" => 90];
+        $options = [
+            "timeout" => 90,
+            "build" => "0.0.445"
+        ];
 
         $actorData = ApifyClient::getInstance()->runActor($actorId, $input, $options);
         if(is_null($actorData)) return [];
@@ -86,11 +89,9 @@ class CityRepository {
             foreach($res as $loc) {
                 if(isset($loc['location_id'])) {
                     $loc_id = $loc['location_id'];
-                    $posts[$loc_id] = ["location_name" => $loc['name'], "topPostsCount" => count($loc['topPosts']), "latestPostsCount" => count($loc['latestPosts'])];
-                    foreach($loc['topPosts'] as $topPost)
-                        $posts[$loc_id]["topPosts"][] = PostUtil::getInformationFromApiArray($topPost);
-                    foreach($loc['latestPosts'] as $latestPost)
-                        $posts[$loc_id]["latestPosts"][] = PostUtil::getInformationFromApiArray($latestPost);
+                    $posts[$loc_id] = ["location_name" => $loc['name'], "postsCount" => count($loc['posts'])];
+                    foreach($loc['posts'] as $post)
+                        $posts[$loc_id]["posts"][] = PostUtil::getInformationFromApiArray($post);
                 }
             }
         }

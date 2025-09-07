@@ -16,8 +16,7 @@ class PostUtil {
             "text" => $post['caption'] ? $post['caption']['text'] : null,
             "date" => $post['taken_at'],
             "username" => $post['user']['username'],
-            "fullname" => $post['user']['full_name'],
-            "pic" => $post['user']['hd_profile_pic_url_info']["url"],
+            "pic" => $post['user']['profile_pic_url'],
             "likeCount" => $post['like_count'],
             "commentCount" => $post['comment_count']
         ];
