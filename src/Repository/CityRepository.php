@@ -73,8 +73,7 @@ class CityRepository {
             "searchType" => "place"
         ];
         $options = [
-            "timeout" => 90,
-            "build" => "0.0.445"
+            "timeout" => 90
         ];
 
         $actorData = ApifyClient::getInstance()->runActor($actorId, $input, $options);
